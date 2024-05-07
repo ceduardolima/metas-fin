@@ -1,14 +1,7 @@
 import Config
 
 # Configure your database
-config :metas_fin, MetasFin.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "metas_fin_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+import_config "./db_config.secret.exs"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
