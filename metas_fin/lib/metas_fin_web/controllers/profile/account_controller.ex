@@ -12,6 +12,18 @@ defmodule MetasFinWeb.Profile.AccountController do
     render(conn, :index, accounts: accounts)
   end
 
+  @doc """
+  Endpoint cria uma nova conta. 
+  ## Examples
+      
+      Valid Request: { account: {email: "email@gmail.com", password: "valid_password", name: "nome"}}
+      Response 200: {id: account_id, email: "email@gmail.com", token: jwt_token} 
+
+      Invalid Request: { account: {email: invalid_email, password: invalid_password, name: "nome"}}
+      Response 404: {errors: [...]}
+
+      
+  """
   def create(conn, %{"account" => account_params}) do
     with {:ok, %Account{} = account} <- Accounts.create_account(account_params),
          {:ok, _user} <- Users.create_user(account, account_params) do
