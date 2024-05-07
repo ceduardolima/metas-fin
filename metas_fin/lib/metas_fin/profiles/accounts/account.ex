@@ -1,4 +1,4 @@
-defmodule MetasFin.Profiles.Account do
+defmodule MetasFin.Profiles.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,6 +8,7 @@ defmodule MetasFin.Profiles.Account do
   schema "contas" do
     field :password, :string
     field :email, :string
+    has_one :user, MetasFin.Profiles.Users.User
 
     timestamps(type: :utc_datetime)
   end
