@@ -1,5 +1,20 @@
 defmodule MetasFinWeb.Router do
   use MetasFinWeb, :router
+  use Plug.ErrorHandler
+
+  @impl Plug.ErrorHandler
+  def handle_errors(conn, %{reason: %Phoenix.Router.NoRouteError{message: message}}) do
+    conn
+    |> json(%{errors: message})
+    |> halt()
+  end
+
+  @impl Plug.ErrorHandler
+  def handle_errors(conn, %{reason: %{message: message}}) do
+    conn
+    |> json(%{errors: message})
+    |> halt()
+  end
 
   pipeline :api do
     plug :accepts, ["json"]
