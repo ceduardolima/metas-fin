@@ -15,7 +15,12 @@ defmodule MetasFinWeb.Profile.AccountController do
   def create(conn, %{"account" => account_params}) do
     with {:ok, %Account{} = account} <- Accounts.create_account(account_params),
          {:ok, _user} <- Users.create_user(account, account_params) do
-         authorize_account(conn, account.email, account_params["password"])
+      authorize_account(conn, account.email, account_params["password"])
+    else
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn 
+          |> put_status(:bad_request)
+          |> render(:show_error, changeset: changeset)
     end
   end
 
