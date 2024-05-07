@@ -1,5 +1,5 @@
 defmodule MetasFinWeb.Profile.AccountJSON do
-  alias MetasFin.Profiles.Account
+  alias MetasFin.Profiles.Accounts.Account
 
   @doc """
   Renders a list of accounts.

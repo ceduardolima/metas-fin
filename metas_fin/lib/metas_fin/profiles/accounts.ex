@@ -1,4 +1,4 @@
-defmodule MetasFin.Profiles do
+defmodule MetasFin.Profiles.Accounts do
   @moduledoc """
   The Profiles context.
   """
@@ -6,7 +6,7 @@ defmodule MetasFin.Profiles do
   import Ecto.Query, warn: false
   alias MetasFin.Repo
 
-  alias MetasFin.Profiles.Account
+  alias MetasFin.Profiles.Accounts.Account
 
   @doc """
   Returns the list of accounts.
