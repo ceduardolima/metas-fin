@@ -5,7 +5,8 @@ defmodule MetasFinWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", MetasFinWeb do
+  scope "/auth", MetasFinWeb do
     pipe_through :api
+    post "/register", Profile.AccountController, :create
   end
 end

@@ -21,6 +21,13 @@ defmodule MetasFin.Profiles.Accounts.Account do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:email, max: 100, message: "Email deve possuir no máximo 100 caracteres e no mínimo 10")
     |> validate_length(:password, max: 100, min: 6, message: "Senha deve possuir no máximo 100 caracteres e no mínimo 6")
+    |> put_hash_password()
     |> unique_constraint(:email)
   end
+
+  defp put_hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do 
+    change(changeset, password: Bcrypt.hash_pwd_salt(password))
+  end
+
+  defp put_hash_password(changeset), do: changeset
 end
