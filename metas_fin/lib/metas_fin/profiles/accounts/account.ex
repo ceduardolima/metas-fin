@@ -17,12 +17,12 @@ defmodule MetasFin.Profiles.Accounts.Account do
   def changeset(account, attrs) do
     account
     |> cast(attrs, [:email, :password])
-    |> validate_required([:email, :password])
-    |> validate_format(:email, ~r/@/)
+    |> validate_required([:email, :password], message: "Campos email e password são obrigatórios")
+    |> validate_format(:email, ~r/@/, message: "Formato do email inválido")
     |> validate_length(:email, max: 100, message: "Email deve possuir no máximo 100 caracteres e no mínimo 10")
     |> validate_length(:password, max: 100, min: 6, message: "Senha deve possuir no máximo 100 caracteres e no mínimo 6")
     |> put_hash_password()
-    |> unique_constraint(:email)
+    |> unique_constraint(:email, message: "O email já existe")
   end
 
   defp put_hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do 
