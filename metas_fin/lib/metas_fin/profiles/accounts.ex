@@ -38,6 +38,42 @@ defmodule MetasFin.Profiles.Accounts do
   def get_account!(id), do: Repo.get!(Account, id)
 
   @doc """
+  Gets a single account by email.
+
+  ## Examples
+
+      iex> get_account_by_email(email@email.com)
+      %Account{}
+
+      iex> get_accountby_email(invalid@email.com)
+      nil
+
+  """
+  def get_account_by_email(email) do
+    Account |> where(email: ^email) |> Repo.one()
+  end
+
+
+  @doc """
+  Gets a single account by with its respective user.
+
+  ## Examples
+
+      iex> get_full_account(id)
+      %Account{ user: %User{}}
+
+      iex> get_full_account(invalid_id)
+      nil
+
+  """
+  def get_full_account(id) do
+    Account 
+      |> where(id: ^id)
+      |> preload(:user)
+      |> Repo.one()
+  end
+
+  @doc """
   Creates a account.
 
   ## Examples

@@ -22,4 +22,12 @@ defmodule MetasFinWeb.Profile.AccountJSON do
       password: account.password
     }
   end
+
+  def show_token(%{account: account, token: token}) do
+    %{
+      id: account.id,
+      email: account.email,
+      token: token
+    }
+  end
 end

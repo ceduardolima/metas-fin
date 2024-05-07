@@ -30,6 +30,10 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :metas_fin, MetasFin.Profiles.Guardian,
+  issuer: "metas_fin",
+  secret_key: "ihiMwcC5kOj6xItHXmfJT2hvjatyhqSqTlKBRvp5Dpkz96JvOBE33C8inDiBDFLs"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
