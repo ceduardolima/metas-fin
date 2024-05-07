@@ -1,8 +1,9 @@
 defmodule MetasFinWeb.Profile.AccountController do
   use MetasFinWeb, :controller
 
-  alias MetasFin.Profiles.Accounts
+  alias MetasFin.Profiles.{Accounts, Users, Guardian}
   alias MetasFin.Profiles.Accounts.Account
+  alias MetasFinWeb.Errors.ErrorHandler
 
   action_fallback MetasFinWeb.FallbackController
 
@@ -12,10 +13,9 @@ defmodule MetasFinWeb.Profile.AccountController do
   end
 
   def create(conn, %{"account" => account_params}) do
-    with {:ok, %Account{} = account} <- Accounts.create_account(account_params) do
-      conn
-      |> put_status(:created)
-      |> render(:show, account: account)
+    with {:ok, %Account{} = account} <- Accounts.create_account(account_params),
+         {:ok, _user} <- Users.create_user(account, account_params) do
+         authorize_account(conn, account.email, account_params["password"])
     end
   end
 
@@ -37,6 +37,19 @@ defmodule MetasFinWeb.Profile.AccountController do
 
     with {:ok, %Account{}} <- Accounts.delete_account(account) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  defp authorize_account(conn, email, password) do
+    case Guardian.authenticate(email, password) do
+      {:ok, account, token} ->
+        conn
+        |> Plug.Conn.put_session(:account_id, account.id)
+        |> put_status(:ok)
+        |> render(:show_token, %{account: account, token: token})
+
+      {:error, :unauthorized} ->
+        raise ErrorHandler.Unauthorized, message: "Não authorizado"
     end
   end
 end

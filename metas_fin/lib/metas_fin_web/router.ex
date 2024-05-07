@@ -3,6 +3,12 @@ defmodule MetasFinWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+  end
+
+  pipeline :auth do
+    plug MetasFinWeb.Auth.Pipeline
+    plug MetasFinWeb.Auth.SetAccount
   end
 
   scope "/auth", MetasFinWeb do
