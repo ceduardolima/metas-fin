@@ -8,11 +8,6 @@ defmodule MetasFinWeb.Profile.AccountController do
 
   action_fallback MetasFinWeb.FallbackController
 
-  def index(conn, _params) do
-    accounts = Accounts.list_accounts()
-    render(conn, :index, accounts: accounts)
-  end
-
   @doc """
   Endpoint cria uma nova conta. 
   ## Examples
