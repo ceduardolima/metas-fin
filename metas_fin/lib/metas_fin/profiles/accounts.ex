@@ -125,6 +125,13 @@ defmodule MetasFin.Profiles.Accounts do
     Repo.delete(account)
   end
 
+  def delete_account_by_email(email) do
+    Account
+    |> where(email: ^email)
+    |> Repo.one()
+    |> Repo.delete()
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking account changes.
 

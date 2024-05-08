@@ -35,7 +35,9 @@ defmodule MetasFinWeb.Profile.AccountJSON do
   def show_error(%{changeset: changeset}) do
     errors = build_changeset_error(changeset.errors)
     %{
-      errors: errors
+      errors: %{
+        details: errors
+      }
     }
   end
 

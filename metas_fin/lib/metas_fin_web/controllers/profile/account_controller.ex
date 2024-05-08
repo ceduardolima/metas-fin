@@ -3,6 +3,7 @@ defmodule MetasFinWeb.Profile.AccountController do
 
   alias MetasFin.Profiles.{Accounts, Users, Guardian}
   alias MetasFin.Profiles.Accounts.Account
+  alias MetasFin.Profiles.Users.User
   alias MetasFinWeb.Errors.ErrorHandler
 
   action_fallback MetasFinWeb.FallbackController
@@ -21,7 +22,6 @@ defmodule MetasFinWeb.Profile.AccountController do
 
       Invalid Request: { account: {email: invalid_email, password: invalid_password, name: "nome"}}
       Response 404: {errors: [...]}
-
       
   """
   def create(conn, %{"account" => account_params}) do
@@ -29,10 +29,17 @@ defmodule MetasFinWeb.Profile.AccountController do
          {:ok, _user} <- Users.create_user(account, account_params) do
       authorize_account(conn, account.email, account_params["password"])
     else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        conn 
-          |> put_status(:bad_request)
-          |> render(:show_error, changeset: changeset)
+      {:error, %Ecto.Changeset{data: %Account{}} = changeset} ->
+        conn
+        |> put_status(:bad_request)
+        |> render(:show_error, changeset: changeset)
+
+      {:error, %Ecto.Changeset{data: %User{}} = changeset} ->
+        Accounts.delete_account_by_email(account_params["email"])
+
+        conn
+        |> put_status(:bad_request)
+        |> render(:show_error, changeset: changeset)
     end
   end
 
