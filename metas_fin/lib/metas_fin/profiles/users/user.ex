@@ -16,7 +16,7 @@ defmodule MetasFin.Profiles.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :account_id])
-    |> validate_required([:name, :account_id])
+    |> validate_required([:name, :account_id], message: "O campo 'name' não pode ser vazio")
     |> validate_length(:name, max: 80, message: "Nome deve possuir no máximo 80 caracteres")
     |> unique_constraint(:account_id)
   end
