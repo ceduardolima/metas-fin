@@ -66,11 +66,11 @@ defmodule MetasFinWeb.Profile.AccountController do
 
   defp authorize_account(conn, email, password) do
     case Guardian.authenticate(email, password) do
-      {:ok, account, token} ->
+      {:ok, account, token, expiration_timestamp} ->
         conn
         |> Plug.Conn.put_session(:account_id, account.id)
         |> put_status(:ok)
-        |> render(:show_token, %{account: account, token: token})
+        |> render(:show_token, %{account: account, token: token, expiration: expiration_timestamp})
 
       {:error, :unauthorized} ->
         raise ErrorHandler.Unauthorized, message: "Não authorizado"

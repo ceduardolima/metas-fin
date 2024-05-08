@@ -34,6 +34,12 @@ config :metas_fin, MetasFin.Profiles.Guardian,
   issuer: "metas_fin",
   secret_key: "ihiMwcC5kOj6xItHXmfJT2hvjatyhqSqTlKBRvp5Dpkz96JvOBE33C8inDiBDFLs"
 
+config :guardian, Guardian.DB,
+  repo: MetasFin.Repo, # Add your repository module
+  schema_name: "guardian_tokens", # default
+  sweep_interval: 60
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
